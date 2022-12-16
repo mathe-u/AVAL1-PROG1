@@ -1,7 +1,8 @@
 class Individual:
     _n = 0
+    
     def __init__(self, indiv_genotype, indiv_name=None):
-        if not indiv_name:
+        if indiv_name is None:
             Individual._n += 1
             indiv_name = "Indiv" + str(Individual._n)
         
@@ -11,24 +12,19 @@ class Individual:
         self.__indiv_genotype = indiv_genotype
         self.__indiv_name = indiv_name
     
-    
     def __repr__(self):
         return "Individual(%s)" %(self.__indiv_genotype)
     
-    
     def __str__(self):
         return self.__indiv_genotype
-    
     
     @property
     def name(self):
         return self.__indiv_name
     
-    
     @property
     def genotype(self):
         return self.__indiv_genotype
-    
     
     @property
     def blood_type(self):
@@ -41,7 +37,6 @@ class Individual:
         if self.genotype == "ii":
             return "O"
     
-    
     @property
     def agglutinogens(self):
         if self.blood_type == "AB":
@@ -52,7 +47,6 @@ class Individual:
             return "A"
         else:
             return "B"
-    
     
     @property
     def agglutinins(self):
@@ -65,7 +59,6 @@ class Individual:
         else:
             return "A"
     
-    
     def conversion(arg):
         if isinstance(arg, str):
             return Individual(arg)
@@ -73,7 +66,6 @@ class Individual:
             return arg
         else:
             raise TypeError("Argument of method is invalid.")
-    
     
     def offsprings_genotypes(self, other):
         other = Individual.conversion(other)
@@ -91,7 +83,6 @@ class Individual:
                     set_genotypes.append(i + j)
         return set(set_genotypes)
     
-    
     def offsprings_blood_types(self, other):
         other = Individual.conversion(other)
         set_blood_types = []
@@ -107,7 +98,6 @@ class Individual:
                 set_blood_types.append("O")
         return set(set_blood_types)
     
-    
     def blood_transfusion(self, donator, receptor):
         donator = Individual.conversion(donator)
         receptor = Individual.conversion(receptor)
@@ -119,11 +109,9 @@ class Individual:
         else:
             return False
     
-    
     def can_donate(self, other):
         return self.blood_transfusion(self, other)
     
-    
     def can_receive(self, other):
         return self.blood_transfusion(other, self)
-
+    

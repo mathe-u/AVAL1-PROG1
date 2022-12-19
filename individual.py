@@ -1,31 +1,42 @@
 class Individual:
     _n = 0
     
-    def __init__(self, indiv_genotype, indiv_name=None):
-        if indiv_name is None:
+    def __init__(self, genotype, name=None):
+        self.__genotype = Individual.validate_genotype(genotype)
+        self.__name = Individual.__genarate_name(name)
+
+
+    def __genarate_name(name):
+        if name is None:
             Individual._n += 1
-            indiv_name = "Indiv" + str(Individual._n)
-        
-        if indiv_genotype not in ["AA", "Ai", "BB", "Bi", "AB", "ii"]:
+            return "Indiv" + str(Individual._n)
+        return name
+
+
+    def validate_genotype(genotype):
+        if genotype not in ["AA","Ai","BB","Bi","AB","ii"]:
             raise ValueError("Genotype invalid.")
-        
-        self.__indiv_genotype = indiv_genotype
-        self.__indiv_name = indiv_name
-    
+        return genotype
+
+
     def __repr__(self):
-        return "Individual(%s)" %(self.__indiv_genotype)
-    
+        return "Individual(%s)" %(self.__genotype)
+
+
     def __str__(self):
-        return self.__indiv_genotype
-    
+        return self.__genotype
+
+
     @property
     def name(self):
-        return self.__indiv_name
-    
+        return self.__name
+
+
     @property
     def genotype(self):
-        return self.__indiv_genotype
-    
+        return self.__genotype
+
+
     @property
     def blood_type(self):
         if self.genotype == "AA" or self.genotype == "Ai":
@@ -36,7 +47,8 @@ class Individual:
             return "AB"
         if self.genotype == "ii":
             return "O"
-    
+
+
     @property
     def agglutinogens(self):
         if self.blood_type == "AB":
@@ -47,7 +59,8 @@ class Individual:
             return "A"
         else:
             return "B"
-    
+
+
     @property
     def agglutinins(self):
         if self.blood_type == "AB":
@@ -58,7 +71,8 @@ class Individual:
             return "B"
         else:
             return "A"
-    
+
+
     def conversion(arg):
         if isinstance(arg, str):
             return Individual(arg)
@@ -66,7 +80,8 @@ class Individual:
             return arg
         else:
             raise TypeError("Argument of method is invalid.")
-    
+
+
     def offsprings_genotypes(self, other):
         other = Individual.conversion(other)
         set_genotypes = []
@@ -82,7 +97,8 @@ class Individual:
                 else:
                     set_genotypes.append(i + j)
         return set(set_genotypes)
-    
+
+
     def offsprings_blood_types(self, other):
         other = Individual.conversion(other)
         set_blood_types = []
@@ -97,7 +113,8 @@ class Individual:
             else:
                 set_blood_types.append("O")
         return set(set_blood_types)
-    
+
+
     def blood_transfusion(self, donator, receptor):
         donator = Individual.conversion(donator)
         receptor = Individual.conversion(receptor)
@@ -108,10 +125,12 @@ class Individual:
             return True
         else:
             return False
-    
+
+
     def can_donate(self, other):
         return self.blood_transfusion(self, other)
-    
+
+
     def can_receive(self, other):
         return self.blood_transfusion(other, self)
-    
+
